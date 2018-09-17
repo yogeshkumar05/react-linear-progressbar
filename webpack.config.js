@@ -1,29 +1,29 @@
+const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const htmlWebpackPlugin = new HtmlWebpackPlugin({
+    template: path.join(__dirname, "examples/src/index.html"),
+    filename: "./index.html"
+});
 module.exports = {
-    entry : './src/index.js',
-    output : {
-        path : __dirname,
-        filename : 'bundle.js'
-    },
-    devServer : {
-        historyApiFallback: true,
-        inline : true,
-        port : 5050,
-        host : "0.0.0.0"
-    },
-    devtool: '#eval-source-map', // to show component line number in console logs, than bundle.js line number
-    module : {
-        rules : [
+    entry: path.join(__dirname, "examples/src/index.jsx"),
+    module: {
+        rules: [
             {
-                test : /\.js$/,
-                exclude : /node_modules/,
-                loader : 'babel-loader',
-                query : {
-                    presets : ['es2015','react', 'stage-2'] // stage-2 is to support ES6 arrow function
-                }
+                test: /\.(js|jsx)$/,
+                use: "babel-loader",
+                exclude: /node_modules/
             },
-
-            { test: /\.scss|.css$/, loader: ['style-loader','css-loader','sass-loader']},       
-            { test: /\.jpe?g|png|gif|svg|woff|ttf|eot$/, loader:  ['url-loader']}
+            {
+                test: /\.(css|scss)$/,
+                use: ["style-loader", "css-loader", "sass-loader"]
+            }
         ]
+    },
+    plugins: [htmlWebpackPlugin],
+    resolve: {
+        extensions: [".js", ".jsx"]
+    },
+    devServer: {
+        port: 3001
     }
-}
+};
